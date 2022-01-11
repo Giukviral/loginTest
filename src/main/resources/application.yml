@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: service
 
 # common
 security:
@@ -22,7 +22,6 @@ spring:
   profiles: local
   datasource:
     url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    # url: jdbc:mysql://localhost:3306/user_db
     username: root
     password: root
   tomcat:
@@ -36,7 +35,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        # dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         id:
           new_generator_mappings: false
@@ -50,25 +48,17 @@ server:
 spring:
   profiles: service
   datasource:
-    url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    # url: jdbc:mysql://localhost:3306/user_db
-    username: admin
-    password: admin
+    driver-class-name : com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user_data
+    username: root
+    # admin
+    password: root
+    # vpmember1!
   tomcat:
     max-wait: 20000
     max-active: 50
     max-idle: 20
     min-idle: 15
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        # dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-        id:
-          new_generator_mappings: false
 
 server:
   profiles: service
