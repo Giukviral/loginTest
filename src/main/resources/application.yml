@@ -54,6 +54,7 @@ spring:
     # admin
     password: root
     # vpmember1!
+    mapper-locations:classpath:/mapper/**/*.xml
   tomcat:
     max-wait: 20000
     max-active: 50

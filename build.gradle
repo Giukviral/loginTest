@@ -15,13 +15,13 @@ repositories {
 
 dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0' // 개발용 spl log
 	implementation 'mysql:mysql-connector-java'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.1'
 	implementation 'org.ojbc.bundles.shared:Entity_Resolution_Resources:1.0.2'
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security' // 로그인페이지를 기본으로 만들어버림
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.security:spring-security-test'
