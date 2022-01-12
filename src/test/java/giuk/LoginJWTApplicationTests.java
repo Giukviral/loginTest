@@ -1,5 +1,6 @@
 package giuk;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +18,7 @@ public class LoginJWTApplicationTests {
 	@Test
 	public void testConnection() throws Exception{
 		Class.forName(DRIVER);
-
+		Assertions.assertEquals(1, 2);
 		try(Connection con = DriverManager.getConnection(URL, USER, PW)){
 			System.out.println("성공");
 			System.out.println(con);

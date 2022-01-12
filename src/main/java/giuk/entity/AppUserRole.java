@@ -1,12 +1,16 @@
 package giuk.entity;
 
-import org.springframework.security.core.GrantedAuthority;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public enum AppUserRole implements GrantedAuthority {
-    ROLE_ADMIN, ROLE_CLIENT;
-
-    public String getAuthority() {
-        return name();
-    }
-
+@Entity
+public class AppUserRole{
+    @Id
+    @Column
+    private Integer role_id;
+    @Column(name="user_id")
+    private Integer user_id;
+    @Column
+    private int role;
 }

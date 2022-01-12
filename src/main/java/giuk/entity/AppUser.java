@@ -3,9 +3,10 @@ package giuk.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @Data // Create getters and setters
@@ -13,7 +14,7 @@ import java.util.List;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Integer id;
 
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
@@ -25,9 +26,10 @@ public class AppUser {
     private String email;
 
     @Size(min = 8, message = "Minimum password length: 8 characters")
+    @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    List<AppUserRole> appUserRoles;
+//    @OneToMany(fetch = FetchType.EAGER) sql 에서 안 됨.
+//    List< AppUserRole > appUserRole;
 
 }
