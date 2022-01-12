@@ -51,9 +51,7 @@ spring:
     driver-class-name : com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/user_data
     username: root
-    # admin
     password: root
-    # vpmember1!
     mapper-locations:classpath:/mapper/**/*.xml
   tomcat:
     max-wait: 20000
