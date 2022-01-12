@@ -16,7 +16,7 @@ API 요구 사항
 지금은 복붙이더라도, 뜻을 알고 복붙해야 함. 한줄한줄 예사롭게 보지 말 것
 Rest 라서 html을 주진 않음 : resource 폴더를 전체적으로 쓰지 않음
 환경변수 분리 : application-<activate>로 파일째 분리함
-ㅇjpa.hibernate.ddl-auto 의 속성을 봐야 함. create-drop은 db를 싹 지웠다 새로 만드는 문제가 있음
+jpa.hibernate.ddl-auto 의 속성을 봐야 함. create-drop은 db를 싹 지웠다 새로 만드는 문제가 있음
 Pre build 를 gradle에 설정하는게 있음
 Annotation을 쓸 지 말지 일관적으로 하는게 좋음
 @Data의 경우 이것저것 많이 들어있어서, 필요한것만 따로 지정해두는게 좋음

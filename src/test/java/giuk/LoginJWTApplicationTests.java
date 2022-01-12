@@ -1,31 +1,30 @@
 package giuk;
 
+import giuk.entity.AppUser;
+import giuk.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.util.List;
 
 @SpringBootTest
 public class LoginJWTApplicationTests {
 
-	private static final String DRIVER = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/user_data";
-	private static final String USER = "root"; //DB 사용자명
-	private static final String PW = "root";   //DB 사용자 비밀번호
+	@Autowired
+	private UserRepository userRepository;
 
 	@Test
 	public void testConnection() throws Exception{
-		Class.forName(DRIVER);
-		Assertions.assertEquals(1, 2);
-		try(Connection con = DriverManager.getConnection(URL, USER, PW)){
-			System.out.println("성공");
-			System.out.println(con);
-		}catch (Exception e) {
-			System.out.println("에러발생");
-			e.printStackTrace();
-		}
+		String name="client4";
+		userRepository.save(new AppUser(name));
+		List<AppUser> result = userRepository.findByNameLike("client");
+		System.out.println("result--\n"+result.toString());
+		Assertions.assertEquals(3,result.size());
+		Assertions.assertEquals("clientpw",result.get(0).getPassword());
+		result = userRepository.findByUserId(3);
+		System.out.println("result--\n"+result.toString());
 	}
 
 }
