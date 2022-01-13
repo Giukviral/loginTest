@@ -5,40 +5,36 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data // Create getters and setters
 @NoArgsConstructor
 public class AppUser {
-    public static final int ROLE_ADMIN = 0x01;
 
-    public AppUser(String username){
-        this.userId=0;
-        this.username=username;
-        this.email=username+"@mail.com";
-        this.password=username+"pw";
-        this.userrole=0;
-    }
+  public AppUser(String username) {
+    this.username = username;
+    this.email = username + "@mail.com";
+    this.password = username + "pw";
+  }
 
-    @Id
-    private Integer userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer userId;
 
-    @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
-    @Column(unique = true, nullable = false)
-    private String username;
+  @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
+  @Column(unique = true, nullable = false)
+  private String username;
 
-    @Size(max=255)
-    @Column(unique = true, nullable = false)
-    private String email;
+  @Size(max = 255)
+  @Column(unique = true, nullable = false)
+  private String email;
 
-    @Size(min = 4, message = "Minimum password length: 4 characters")
-    @Column(nullable = false)
-    private String password;
+  @Size(min = 4, message = "Minimum password length: 4 characters")
+  @Column(nullable = false)
+  private String password;
 
-    @Column
-    private int userrole;
-
-//    @OneToMany(fetch = FetchType.EAGER) sql 에서 안 됨.
-//    List< AppUserRole > appUserRole;
+  @OneToMany(fetch = FetchType.LAZY)
+  List<AppUserRole> appUserRole;
 
 }

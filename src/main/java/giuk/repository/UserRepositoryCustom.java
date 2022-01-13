@@ -5,7 +5,14 @@ import giuk.entity.AppUser;
 import java.util.List;
 
 public interface UserRepositoryCustom {
-    List< AppUser > findByName(String name);
-    List< AppUser > findByNameLike(String name);
-    List< AppUser > findByUserId(Integer userId);
+
+  AppUser findByName(String name);
+
+  List<AppUser> findByNameLike(String name);
+
+  AppUser findByUserId(Integer userId);
+
+  void setAppUser(AppUser addUser);
+
+  void deleteAppUserByUserId(Integer userId);
 }
