@@ -1,18 +1,30 @@
 package giuk.entity;
 
 import javax.persistence.*;
+import lombok.NoArgsConstructor;
 
-// legacy
+enum UserPermission {
+  CLIENT, ADMIN, MANAGER
+}
+
 @Entity
+@NoArgsConstructor
 public class AppUserRole {
 
-  public final int role_admin = 1;
-  public final int role_client = 0;
+  public AppUserRole(int role) {
+    this.role = UserPermission.values()[role];
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer role_id;
   @Column
   private Integer user_id;
   @Column
-  private int role;
+  private UserPermission role;
+
+  @Override
+  public String toString() {
+    return String.format("id:%d, user:%d, role:%s", role_id, user_id, role);
+  }
 }

@@ -1,7 +1,6 @@
 package giuk.repository;
 
 import giuk.entity.AppUser;
-
 import java.util.List;
 
 public interface UserRepositoryCustom {
@@ -15,4 +14,6 @@ public interface UserRepositoryCustom {
   void setAppUser(AppUser addUser);
 
   void deleteAppUserByUserId(Integer userId);
+
+  int getAllUserCount();
 }

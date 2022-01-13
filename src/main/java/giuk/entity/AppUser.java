@@ -1,5 +1,6 @@
 package giuk.entity;
 
+import java.util.ArrayList;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +35,7 @@ public class AppUser {
   @Column(nullable = false)
   private String password;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  List<AppUserRole> appUserRole;
-
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private List<AppUserRole> appUserRoles = new ArrayList<>();
 }

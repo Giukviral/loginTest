@@ -3,10 +3,11 @@ package giuk.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import giuk.entity.AppUser;
 import giuk.entity.QAppUser;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -21,12 +22,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
   @Override
   public List<AppUser> findByNameLike(String name) {
+    log.info("findByNameLike called : " + name);
     return jpaQueryFactory.selectFrom(appUser).where(appUser.username.like("%" + name + "%"))
         .orderBy(appUser.userId.asc()).fetch();
   }
 
   @Override
   public AppUser findByUserId(Integer userId) {
+    log.info("findByUserId Called : " + userId);
     return jpaQueryFactory.selectFrom(appUser).where(appUser.userId.eq(userId)).fetchOne();
   }
 
@@ -40,5 +43,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
   @Override
   public void deleteAppUserByUserId(Integer userId) {
     jpaQueryFactory.delete(appUser).where(appUser.userId.eq(userId)).execute();
+  }
+
+  @Override
+  public int getAllUserCount(){
+    return jpaQueryFactory.select(appUser.count()).from(appUser).fetchOne().intValue();
   }
 }
