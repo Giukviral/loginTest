@@ -17,11 +17,13 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
   @Override
   public AppUser findByName(String name) {
+    log.info("findByName called : " + name);
     return jpaQueryFactory.selectFrom(appUser).where(appUser.username.eq(name)).fetchOne();
   }
 
   @Override
   public AppUser findByMail(String mail) {
+    log.info("findByEmail called : " + mail);
     return jpaQueryFactory.selectFrom(appUser).where(appUser.email.eq(mail)).fetchOne();
   }
 
@@ -40,6 +42,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
   @Override
   public void updateAppUser(AppUser addUser) {
+    log.info("updateAppUser called : " + addUser.toString());
     jpaQueryFactory.update(appUser).where(appUser.userId.eq(addUser.getUserId()))
         .set(appUser.email, addUser.getEmail())
         .execute();
@@ -47,6 +50,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
   @Override
   public void deleteAppUserByUserId(Integer userId) {
+    log.info("deleteAppUserByUserId called : "+userId);
     jpaQueryFactory.delete(appUser).where(appUser.userId.eq(userId)).execute();
   }
 

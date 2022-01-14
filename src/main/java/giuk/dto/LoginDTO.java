@@ -8,9 +8,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginDTO {
+
   @NotNull
-  @Size(min=4,max=255)
+  @Size(min = 4, max = 255)
   private String username;
-  @Size(min=4,max=255)
+  @Size(min = 4, max = 255)
   private String password;
 }

@@ -6,6 +6,7 @@ import java.util.List;
 public interface UserRepositoryCustom {
 
   AppUser findByName(String name);
+
   AppUser findByMail(String mail);
 
   List<AppUser> findByNameLike(String name);

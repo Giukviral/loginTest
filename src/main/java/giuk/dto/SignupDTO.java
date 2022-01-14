@@ -9,10 +9,11 @@ import lombok.Getter;
 @Builder
 @Getter
 public class SignupDTO {
-  @Size(min=4,max = 255)
+
+  @Size(min = 4, max = 255)
   private String username;
   private String email;
-  @Size(min=4,max = 255)
+  @Size(min = 4, max = 255)
   private String password;
   private List<EnumAppUserRole> appUserRole;
 }

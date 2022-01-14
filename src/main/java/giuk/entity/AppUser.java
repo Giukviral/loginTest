@@ -46,4 +46,12 @@ public class AppUser {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private List<AppUserRole> appUserRoles = new ArrayList<>();
+
+  public List<EnumAppUserRole> getRoleWithEnumAppUserRoles() {
+    List<EnumAppUserRole> enumAppUserRoles = new ArrayList<>();
+    for (AppUserRole role : appUserRoles) {
+      enumAppUserRoles.add(role.getRole());
+    }
+    return enumAppUserRoles;
+  }
 }

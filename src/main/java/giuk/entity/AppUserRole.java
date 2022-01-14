@@ -4,7 +4,6 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @Entity
 @NoArgsConstructor
@@ -13,7 +12,10 @@ public class AppUserRole {
   public AppUserRole(int role) {
     this.role = EnumAppUserRole.values()[role];
   }
-  public AppUserRole(EnumAppUserRole role){this.role = role;}
+
+  public AppUserRole(EnumAppUserRole role) {
+    this.role = role;
+  }
 
   @Id
   @Column
@@ -27,7 +29,6 @@ public class AppUserRole {
 
   @Override
   public String toString() {
-    return String.format("id:%d, user:%d, role:%s", role_id, user_id, role);
+    return String.format("{id:%d, user:%d, role:%s}", role_id, user_id, role);
   }
-
 }

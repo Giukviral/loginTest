@@ -7,8 +7,8 @@ spring:
 security:
   jwt:
     token:
-      secret-key: secret-key
-      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+      secret-key: secret-keyMustLongerThen32chars_  # minimum length is related JwtTokenProvider's SignatureAlgorithm
+      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 milliseconds
 
 logging:
   level:
