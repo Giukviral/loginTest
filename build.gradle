@@ -39,10 +39,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-//	implementation 'org.springframework.boot:spring-boot-starter-security' // 로그인페이지를 기본으로 만들어버림
+	implementation 'org.springframework.boot:spring-boot-starter-security' // 로그인페이지를 기본으로 만들어버림
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.session:spring-session-jdbc'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
 	//implementation ''
