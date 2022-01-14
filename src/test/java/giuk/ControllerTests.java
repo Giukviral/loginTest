@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc // E2E test
 public class ControllerTests {
 
   @Autowired
@@ -26,16 +26,13 @@ public class ControllerTests {
 
   @Test
   void test_로그인_테스트() throws Exception {
-    String body = objectMapper.writeValueAsString(
-        new LoginDTO("test", "test")
-    );
-//fail
+    //fail
+    String body = objectMapper.writeValueAsString(new LoginDTO("test", "test"));
     String result = mockMvc.perform(post("/login")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
         .getContentAsString();
-
     Assertions.assertEquals("{\"message\":\"login fail\"}", result);
 
     //success
@@ -48,6 +45,7 @@ public class ControllerTests {
     result = mockMvc.perform(get("/users/my-info").header("Authorization", "Bearer " + jwtToken)
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
         .getContentAsString();
+
     JSONObject jsonObject = new JSONObject(result);
     Assertions.assertEquals("admin", jsonObject.getString("username"));
     Assertions.assertEquals("admin@email.com", jsonObject.getString("email"));
@@ -59,7 +57,7 @@ public class ControllerTests {
     Assertions.assertEquals("admin", jsonObject.getString("username"));
     Assertions.assertEquals("admin@email.com", jsonObject.getString("email"));
 
-    // client
+    // {userid} fail
     body = objectMapper.writeValueAsString(new LoginDTO("client", "clientpw"));
     jwtToken = mockMvc.perform(post("/login")
             .content(body)
@@ -73,7 +71,6 @@ public class ControllerTests {
     Assertions.assertEquals("client", jsonObject.getString("username"));
     Assertions.assertEquals("client@email.com", jsonObject.getString("email"));
     mockMvc.perform(get("/users/1").header("Authorization", "Bearer " + jwtToken)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
-
+        .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
   }
 }

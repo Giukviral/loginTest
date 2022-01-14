@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// We should use OncePerRequestFilter since we are doing a database call, there is no point in doing this more than once
+// request 당 1번 동작하는 필터.
 public class JwtTokenFilter extends OncePerRequestFilter {
 
   private final JwtTokenProvider jwtTokenProvider;
@@ -22,7 +22,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
       FilterChain filterChain) throws ServletException, IOException {
-    String token = jwtTokenProvider.resolveToken(httpServletRequest);
+    String token = jwtTokenProvider.resolveToken(
+        httpServletRequest); // resolve token 이 controller보다 선행
     try {
       if (token != null && jwtTokenProvider.validateToken(token)) {
         Authentication auth = jwtTokenProvider.getAuthentication(token);

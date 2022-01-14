@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
+// 생성시에만 값 설정이 가능하고 변경되지 않을 것임.
 @Builder
 public class AppUserDomain implements UserDetails {
   private int userid;

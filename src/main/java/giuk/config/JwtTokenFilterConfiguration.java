@@ -19,7 +19,7 @@ public class JwtTokenFilterConfiguration extends
   @Override
   public void configure(HttpSecurity http) throws Exception {
     JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider);
-    // security에 위 필터를 먼저 쓸 것이며, username password
+    // security에 위 필터를 먼저 쓸 것이며, username password 인증 절차 전에 쓰일것이다.
     http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
   }
 }

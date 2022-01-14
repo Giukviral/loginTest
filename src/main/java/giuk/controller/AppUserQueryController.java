@@ -44,4 +44,5 @@ public class AppUserQueryController {
   public AppUserResponseDTO myinfo(HttpServletRequest req){
     return userService.myinfo(req);
   }
+  // 이 요청은 인증이 끝난 이후이므로, httpservletrequest 말고 다른데서 본다.
 }

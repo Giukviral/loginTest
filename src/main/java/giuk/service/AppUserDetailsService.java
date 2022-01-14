@@ -23,6 +23,7 @@ public class AppUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     // authenticationManager.authenticate(token)에서 불림.
+    // 지금은 jwt가 filter 에서 auth 동작을 수행하므로 위 코드가 사라졌고, filter에서 호출됨.
     AppUser user = userRepository.findByName(username);
     if (user == null) {
       throw new UsernameNotFoundException(username);
