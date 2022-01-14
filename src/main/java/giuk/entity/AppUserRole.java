@@ -25,6 +25,7 @@ public class AppUserRole {
   @Column
   private Integer user_id;
   @Column
+  //@Enumerated(EnumType.STRING)
   private EnumAppUserRole role;
 
   @Override
