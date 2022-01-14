@@ -1,14 +1,12 @@
 package giuk.controller;
 
 
-import giuk.dto.LoginDataDTO;
-import giuk.dto.UserDataDTO;
-import giuk.dto.UserResponseDTO;
+import giuk.dto.LoginDTO;
+import giuk.dto.SignupDTO;
+import giuk.dto.AppUserResponseDTO;
 import giuk.service.AppUserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,23 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserQueryController {
 
   private final AppUserService userService;
-  private final AuthenticationManager authenticationManager;
 
   @PostMapping("/signup")
-  public String signup(@RequestBody UserDataDTO user){
+  public String signup(@RequestBody @Valid SignupDTO user){
     return userService.saveNewUser(user);
   }
 
   @GetMapping("/users/{userid}")
-  @PreAuthorize("hasRole('ADMIN')")
-  public UserResponseDTO search(@PathVariable String userid){
-    System.out.println("권한이 있나요? 정말?");
+  public AppUserResponseDTO search(@PathVariable String userid){
     return userService.findByUserId(Integer.parseInt(userid));
   }
 
-
   @PostMapping("/login")
-  public String login(@RequestBody @Valid LoginDataDTO loginData) {
+  public String login(@RequestBody @Valid LoginDTO loginData) {
     return userService.login(loginData);
   }
 }

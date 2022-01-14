@@ -13,10 +13,7 @@ public class AppUserRole {
   public AppUserRole(int role) {
     this.role = EnumAppUserRole.values()[role];
   }
-
-  public AppUserRole(Integer role) {
-    this.role = EnumAppUserRole.values()[role];
-  }
+  public AppUserRole(EnumAppUserRole role){this.role = role;}
 
   @Id
   @Column
@@ -25,7 +22,7 @@ public class AppUserRole {
   @Column
   private Integer user_id;
   @Column
-  //@Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.ORDINAL)
   private EnumAppUserRole role;
 
   @Override

@@ -38,6 +38,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     return jpaQueryFactory.selectFrom(appUser).where(appUser.userId.eq(userId)).fetchOne();
   }
 
+  @Override
   public void updateAppUser(AppUser addUser) {
     jpaQueryFactory.update(appUser).where(appUser.userId.eq(addUser.getUserId()))
         .set(appUser.email, addUser.getEmail())

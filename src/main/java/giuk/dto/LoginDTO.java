@@ -2,13 +2,15 @@ package giuk.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
-public class LoginDataDTO {
+@Getter
+@AllArgsConstructor
+public class LoginDTO {
   @NotNull
-  @Size(max = 10, min = 4)
+  @Size(min=4,max=255)
   private String username;
+  @Size(min=4,max=255)
   private String password;
 }

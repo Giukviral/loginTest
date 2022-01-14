@@ -3,15 +3,13 @@ package giuk.domain;
 import java.util.Collection;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
-@Setter
 @Builder
 public class AppUserDomain implements UserDetails {
-  private int user_id;
+  private int userid;
   private String username;
   private String email;
   private String password;

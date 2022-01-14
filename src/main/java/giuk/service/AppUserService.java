@@ -1,11 +1,12 @@
 package giuk.service;
 
 import giuk.domain.AppUserDomain;
-import giuk.dto.LoginDataDTO;
-import giuk.dto.UserDataDTO;
-import giuk.dto.UserResponseDTO;
+import giuk.dto.LoginDTO;
+import giuk.dto.SignupDTO;
+import giuk.dto.AppUserResponseDTO;
 import giuk.entity.AppUser;
 import giuk.entity.AppUserRole;
+import giuk.entity.EnumAppUserRole;
 import giuk.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class AppUserService implements UserDetailsService {
   private final UserRepository userRepository;
   private final AuthenticationManager authenticationManager;
 
-  public String saveNewUser(UserDataDTO userDTO) {
+  public String saveNewUser(SignupDTO userDTO) {
     if (userRepository.findByName(userDTO.getUsername()) != null) {
       return "already exist user name!";
     }
@@ -39,27 +40,33 @@ public class AppUserService implements UserDetailsService {
     newUser.setEmail(userDTO.getEmail());
     newUser.setUsername(userDTO.getUsername());
     newUser.setPassword(userDTO.getPassword());
-    List<Integer> userRole = userDTO.getAppUserRole();
-    for (Integer role : userRole) {
+    List<EnumAppUserRole> userRole = userDTO.getAppUserRole();
+    for (EnumAppUserRole role : userRole) {
       newUser.getAppUserRoles().add(new AppUserRole(role));
     }
     return userRepository.save(newUser).getUserId().toString();
   }
 
-  public UserResponseDTO findByUserId(Integer userid) {
+  public String login(LoginDTO loginData) {
+    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+        loginData.getUsername(), loginData.getPassword());
+    Authentication authentication = authenticationManager.authenticate(token);
+    return "login success";
+  }
+
+
+  public AppUserResponseDTO findByUserId(Integer userid) {
     AppUser user = userRepository.findByUserId(userid);
-    UserResponseDTO retUser = new UserResponseDTO();
     if (user == null) {
-      return retUser;
+      return AppUserResponseDTO.builder().build();
     }
-    retUser.setUsername(user.getUsername());
-    retUser.setEmail(user.getEmail());
-    List<Integer> userRole = new ArrayList<>();
+    List<EnumAppUserRole> userRole = new ArrayList<>();
     List<AppUserRole> hasRole = user.getAppUserRoles();
     for (AppUserRole role : hasRole) {
-      userRole.add(role.getRole().getNumber(role.getRole())); // role에서 enum->interger 방법을 좀더 찾아볼것.
+      userRole.add(role.getRole());
     }
-    retUser.setAppUserRole(userRole);
+    AppUserResponseDTO retUser = AppUserResponseDTO.builder().username(user.getUsername())
+        .email(user.getEmail()).appUserRole(userRole).build();
     return retUser;
   }
 
@@ -71,10 +78,10 @@ public class AppUserService implements UserDetailsService {
       throw new UsernameNotFoundException(username);
     }
 
-    AppUserDomain user = AppUserDomain.builder().user_id(userVO.getUserId())
+    AppUserDomain user = AppUserDomain.builder().userid(userVO.getUserId())
         .username(userVO.getUsername()).email(userVO.getEmail()).password(userVO.getPassword())
+        .authorities(this.getAuthorities(userVO))
         .build();
-    user.setAuthorities(this.getAuthorities(userVO));
     return user;
   }
 
@@ -85,12 +92,5 @@ public class AppUserService implements UserDetailsService {
       returnRole.add(new SimpleGrantedAuthority(role.getRole().name()));
     }
     return returnRole;
-  }
-
-  public String login(LoginDataDTO loginData) {
-    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-        loginData.getUsername(), loginData.getPassword());
-    Authentication authentication = authenticationManager.authenticate(token);
-    return "login success";
   }
 }

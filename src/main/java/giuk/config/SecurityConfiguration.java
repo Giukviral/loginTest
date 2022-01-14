@@ -14,19 +14,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
-  protected void configure(HttpSecurity http) throws  Exception{
+  protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable() //cross site request forgery disable
-        //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and() // 쿠키에 세션 저장하지 않음. stateless를 위해.
         .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll() //브라우저에서 alive check 통과
+        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //브라우저에서 alive check 통과
         .antMatchers("/login").permitAll()
         .antMatchers("/signup").permitAll()
+        .antMatchers("/users/**").permitAll()
         .anyRequest().authenticated();
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder(){
-    return new PasswordEncoder() { //이게 없으면 비밀번호를 null로 만들어버림
+  public PasswordEncoder passwordEncoder() {
+    return new PasswordEncoder() {
       @Override
       public String encode(CharSequence rawPassword) {
         return rawPassword.toString();
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
       @Override
       public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encodedPassword.compareTo(rawPassword.toString())==0;
+        return encodedPassword.compareTo(rawPassword.toString()) == 0;
       }
     };
   }
@@ -45,6 +45,3 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     return super.authenticationManagerBean();
   }
 }
-
-//회원 가입 -> 토큰
-//토큰 -> 검증 -> 회원 반환
