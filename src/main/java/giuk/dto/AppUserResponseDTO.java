@@ -27,7 +27,7 @@ public class AppUserResponseDTO {
     if(user==null) return;
     this.username = user.getUsername();
     this.email = user.getEmail();
-    this.appUserRole = new ArrayList();
+    this.appUserRole = new ArrayList<EnumAppUserRole>();
     for (GrantedAuthority g:user.getAuthorities()) {
       this.appUserRole.add(EnumAppUserRole.valueOf(g.getAuthority()));
     }
