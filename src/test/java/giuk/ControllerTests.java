@@ -24,26 +24,45 @@ public class ControllerTests {
   @Autowired
   private ObjectMapper objectMapper;
 
+  private static final int JTW_OFFSET = 12;
+
   @Test
-  void test_로그인_테스트() throws Exception {
+  void test_로그인_테스트_잘못된비번() throws Exception {
     //fail
     String body = objectMapper.writeValueAsString(new LoginDTO("test", "test"));
     String result = mockMvc.perform(post("/login")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn().getResponse()
         .getContentAsString();
-    Assertions.assertEquals("{\"message\":\"login fail\"}", result);
+    Assertions.assertEquals("{\"message\":\"un correct id/pw\"}", result);
+  }
 
+  @Test
+  void test_로그인_테스트_부적절한입력() throws Exception {
+    //fail
+    String body = objectMapper.writeValueAsString(new LoginDTO("tes", "test"));
+    String result = mockMvc.perform(post("/login")
+            .content(body)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn().getResponse()
+        .getContentAsString();
+    Assertions.assertEquals("{\"message\":\"invalid id/pw\"}", result);
+  }
+
+  @Test
+  void test_권한_테스트_admin() throws Exception {
     //success
-    body = objectMapper.writeValueAsString(new LoginDTO("admin", "adminpw"));
+    String body = objectMapper.writeValueAsString(new LoginDTO("admin", "adminpw"));
     String jwtToken = mockMvc.perform(post("/login")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
-        .getContentAsString().substring(12);
-    result = mockMvc.perform(get("/users/my-info").header("Authorization", "Bearer " + jwtToken)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
+        .getContentAsString().substring(JTW_OFFSET);
+    String result = mockMvc.perform(
+            get("/users/my-info").header("Authorization", "Bearer " + jwtToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn()
+        .getResponse()
         .getContentAsString();
 
     JSONObject jsonObject = new JSONObject(result);
@@ -56,21 +75,26 @@ public class ControllerTests {
     jsonObject = new JSONObject(result);
     Assertions.assertEquals("admin", jsonObject.getString("username"));
     Assertions.assertEquals("admin@email.com", jsonObject.getString("email"));
+  }
 
-    // {userid} fail
-    body = objectMapper.writeValueAsString(new LoginDTO("client", "clientpw"));
-    jwtToken = mockMvc.perform(post("/login")
+  @Test
+  void test_권한_테스트_client() throws Exception {
+
+    String body = objectMapper.writeValueAsString(new LoginDTO("client", "clientpw"));
+    String jwtToken = mockMvc.perform(post("/login")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
-        .getContentAsString().substring(12);
-    result = mockMvc.perform(get("/users/my-info").header("Authorization", "Bearer " + jwtToken)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse()
+        .getContentAsString().substring(JTW_OFFSET);
+    String result = mockMvc.perform(
+            get("/users/my-info").header("Authorization", "Bearer " + jwtToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn()
+        .getResponse()
         .getContentAsString();
-    jsonObject = new JSONObject(result);
+    JSONObject jsonObject = new JSONObject(result);
     Assertions.assertEquals("client", jsonObject.getString("username"));
     Assertions.assertEquals("client@email.com", jsonObject.getString("email"));
     mockMvc.perform(get("/users/1").header("Authorization", "Bearer " + jwtToken)
-        .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        .accept(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
   }
 }
