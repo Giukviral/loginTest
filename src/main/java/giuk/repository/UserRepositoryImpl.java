@@ -1,5 +1,7 @@
 package giuk.repository;
 
+import static giuk.entity.QAppUserRole.appUserRole;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import giuk.entity.AppUser;
 import giuk.entity.QAppUser;
@@ -51,6 +53,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
   @Override
   public void deleteAppUserByUserId(Integer userId) {
     log.info("deleteAppUserByUserId called : "+userId);
+    jpaQueryFactory.delete(appUserRole).where(appUserRole.user_id.eq(userId)).execute();
     jpaQueryFactory.delete(appUser).where(appUser.userId.eq(userId)).execute();
   }
 

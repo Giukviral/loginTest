@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -57,6 +59,7 @@ public class JwtTokenProvider {
   }
 
   public Authentication getAuthentication(String token) {
+    log.info("get authentication");
     UserDetails userDetails = appUserDetails.loadUserByUsername(getUsername(token));
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
@@ -79,6 +82,8 @@ public class JwtTokenProvider {
       Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
       return true;
     } catch (JwtException | IllegalArgumentException e) {
+      log.info("token is invalid");
+      log.info(e.getMessage());
       throw new Exception("Expired or invalid JWT token");
     }
   }

@@ -12,11 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data // Create getters and setters
+@Getter
+@Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class AppUser {
 
@@ -24,6 +28,12 @@ public class AppUser {
     this.username = username;
     this.email = username + "@mail.com";
     this.password = username + "pw";
+  }
+
+  public AppUser(String username, String email, String password){
+    this.username = username;
+    this.email = email;
+    this.password = password;
   }
 
   @Id
@@ -53,5 +63,10 @@ public class AppUser {
       enumAppUserRoles.add(role.getRole());
     }
     return enumAppUserRoles;
+  }
+
+  @Override
+  public String toString(){
+    return String.format("id : %d, name : %s, email : %s, passwd : %s, role : %s",userId, username, email, password, appUserRoles.toString());
   }
 }

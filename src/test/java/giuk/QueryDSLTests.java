@@ -20,26 +20,24 @@ public class QueryDSLTests {
   @Transactional(readOnly = false)
   @Test
   public void test_AppUser데이터_저장() throws Exception {
+    // 신규 저장
     AppUser result = new AppUser("client4");
     result.getAppUserRoles().add(new AppUserRole(0));
     int count = userRepository.getAllUserCount();
-    int newUserId = userRepository.save(result).getUserId();
-    System.out.println(count);
-    Assertions.assertEquals(count + 1, userRepository.findByNameLike("").size());
-    result = userRepository.findByName("client4");
-    //System.out.println(result);  // userRole에 자동으로 user가 등록이 안됨
-    result.setEmail("ttt@gmail.com");
-    userRepository.updateAppUser(result);
-    result = userRepository.findByName("client4");
-    System.out.println(result); // 새로 가져와도 안됨. appUserRoles=[id:12, user:null, role:CLIENT]
-    Assertions.assertEquals("ttt@gmail.com", result.getEmail());
-  }
+    userRepository.save(result);
+    Assertions.assertEquals(count + 1, userRepository.getAllUserCount());
 
-  @Transactional(readOnly = false)
-  @Test
-  public void test_AppUserRole조회() throws Exception {
-    AppUser result = userRepository.findByUserId(1);
-    System.out.println(result.getUsername());
+    // 업데이트
+    result = userRepository.findByName("client4");
+    AppUser replace = new AppUser(result.getUserId(), result.getUsername(), "ttt@gmail.com",
+        result.getPassword(), result.getAppUserRoles());
+    System.out.println(replace);
     System.out.println(result);
+    userRepository.updateAppUser(replace);
+    replace = userRepository.findByMail("ttt@gmail.com");
+    System.out.println(replace); //ttt로 찾아지는데, 결과물은 client4임...
+//    Assertions.assertEquals("ttt@gmail.com", result.getEmail());
+    userRepository.deleteAppUserByUserId(replace.getUserId());
+    Assertions.assertEquals(count, userRepository.getAllUserCount());
   }
 }

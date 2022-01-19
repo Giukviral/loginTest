@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {
+
   private final UserRepository userRepository;
 
   @Override
@@ -29,7 +30,7 @@ public class AppUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException(username);
     }
     return AppUserDomain.builder().userid(user.getUserId()).username(user.getUsername())
-        .email(user.getEmail()).password(user.getPassword()).authorities(this.getAuthorities(user))
+        .email(user.getEmail()).password(user.getPassword()).authorities(getAuthorities(user))
         .build();
   }
 

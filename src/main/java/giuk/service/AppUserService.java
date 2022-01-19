@@ -1,5 +1,6 @@
 package giuk.service;
 
+import giuk.domain.AppUserDomain;
 import giuk.dto.AppUserResponseDTO;
 import giuk.dto.LoginDTO;
 import giuk.dto.RestResponseDTO;
@@ -10,7 +11,6 @@ import giuk.entity.EnumAppUserRole;
 import giuk.repository.UserRepository;
 import giuk.security.JwtTokenProvider;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,21 +28,18 @@ public class AppUserService {
 
   public RestResponseDTO signup(SignupDTO userDTO) {
     if (userRepository.findByName(userDTO.getUsername()) != null) {
-      return new RestResponseDTO("username is duplicated.");
+      return new RestResponseDTO("duplicated username");
     }
     if (userRepository.findByMail(userDTO.getEmail()) != null) {
-      return new RestResponseDTO("email is duplicated.");
+      return new RestResponseDTO("duplicated email");
     }
-    AppUser newUser = new AppUser();
-    newUser.setEmail(userDTO.getEmail());
-    newUser.setUsername(userDTO.getUsername());
-    newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+    AppUser newUser = new AppUser(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
     List<EnumAppUserRole> userRole = userDTO.getAppUserRole();
     for (EnumAppUserRole role : userRole) {
       newUser.getAppUserRoles().add(new AppUserRole(role));
     }
     return new RestResponseDTO(
-        "signup success. userid : " + userRepository.save(newUser).getUserId().toString());
+        userRepository.save(newUser).getUserId().toString());
   }
 
   public RestResponseDTO login(LoginDTO loginData) {
@@ -53,7 +50,7 @@ public class AppUserService {
       return new RestResponseDTO(jwtTokenProvider.createToken(loginData.getUsername(),
           userRepository.findByName(loginData.getUsername()).getAppUserRoles()));
     } catch (Exception e) {
-      return new RestResponseDTO("login fail");
+      return new RestResponseDTO("un correct id/pw");
     }
   }
 
@@ -62,11 +59,7 @@ public class AppUserService {
     return new AppUserResponseDTO(user);
   }
 
-  public AppUserResponseDTO myinfo(HttpServletRequest req) {
-    AppUser user = userRepository.findByName(jwtTokenProvider.getUsername(
-        jwtTokenProvider.resolveToken(req)));
-    // res 는 로그인 된 이후이므로 null이 되지 않는다.
+  public AppUserResponseDTO myInfo(AppUserDomain user) {
     return new AppUserResponseDTO(user);
   }
-
 }
