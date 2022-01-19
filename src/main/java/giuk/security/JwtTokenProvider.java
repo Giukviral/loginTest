@@ -54,7 +54,8 @@ public class JwtTokenProvider {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 
     return Jwts.builder().setClaims(claims).setIssuedAt(now).setExpiration(validity)
-        .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256) // 알고리즘에 따라 키의 미니멈 길이가 달라짐.
+        .signWith(Keys.hmacShaKeyFor(keyBytes),
+            SignatureAlgorithm.HS256) // 알고리즘에 따라 키의 미니멈 길이가 달라짐.
         .compact();
   }
 

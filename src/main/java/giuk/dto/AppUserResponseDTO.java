@@ -17,18 +17,23 @@ public class AppUserResponseDTO {
   private String email;
   private List<EnumAppUserRole> appUserRole;
 
-  public AppUserResponseDTO(AppUser user){
-    if(user == null) return;
+  public AppUserResponseDTO(AppUser user) {
+    if (user == null) {
+      return;
+    }
     this.username = user.getUsername();
     this.email = user.getEmail();
     this.appUserRole = user.getRoleWithEnumAppUserRoles();
   }
-  public AppUserResponseDTO(AppUserDomain user){
-    if(user==null) return;
+
+  public AppUserResponseDTO(AppUserDomain user) {
+    if (user == null) {
+      return;
+    }
     this.username = user.getUsername();
     this.email = user.getEmail();
-    this.appUserRole = new ArrayList<EnumAppUserRole>();
-    for (GrantedAuthority g:user.getAuthorities()) {
+    this.appUserRole = new ArrayList<>();
+    for (GrantedAuthority g : user.getAuthorities()) {
       this.appUserRole.add(EnumAppUserRole.valueOf(g.getAuthority()));
     }
   }

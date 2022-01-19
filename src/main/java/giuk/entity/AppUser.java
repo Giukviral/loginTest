@@ -15,10 +15,8 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +28,7 @@ public class AppUser {
     this.password = username + "pw";
   }
 
-  public AppUser(String username, String email, String password){
+  public AppUser(String username, String email, String password) {
     this.username = username;
     this.email = email;
     this.password = password;
@@ -66,7 +64,8 @@ public class AppUser {
   }
 
   @Override
-  public String toString(){
-    return String.format("id : %d, name : %s, email : %s, passwd : %s, role : %s",userId, username, email, password, appUserRoles.toString());
+  public String toString() {
+    return String.format("id : %d, name : %s, email : %s, passwd : %s, role : %s", userId, username,
+        email, password, appUserRoles.toString());
   }
 }
